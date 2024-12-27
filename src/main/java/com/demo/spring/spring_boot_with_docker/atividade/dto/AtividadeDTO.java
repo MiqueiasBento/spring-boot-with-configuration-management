@@ -5,13 +5,13 @@ import com.demo.spring.spring_boot_with_docker.atividade.StatusAtividade;
 
 public class AtividadeDTO {
     public Long id;
-    public String nome;
     public String descricao;
     public StatusAtividade status;
+    public String responsavel;
 
     public AtividadeDTO(Atividade atividade) {
         this.id = atividade.getId();
-        this.nome = atividade.getDescricao();
+        this.responsavel = atividade.getResponsavel();
         this.descricao = atividade.getDescricao();
         this.status = atividade.getStatus();
     }
@@ -32,12 +32,12 @@ public class AtividadeDTO {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getResponsavel() {
+        return responsavel;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setResponsavel(String responsavel) {
+        this.responsavel = responsavel;
     }
 
     public StatusAtividade getStatus() {
