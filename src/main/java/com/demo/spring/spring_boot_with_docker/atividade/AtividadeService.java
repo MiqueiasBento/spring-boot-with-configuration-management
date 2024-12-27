@@ -27,6 +27,7 @@ public class AtividadeService {
 
     public Atividade update(Long id, Atividade atividade) {
         if (atividadeRepository.existsById(id)) {
+            atividade.setId(id);
             return atividadeRepository.save(atividade);
         }
         return null;
