@@ -1,0 +1,28 @@
+version: '3.8'          # Define a versão do Docker Compose
+
+services:               # Lista os containers (serviços) que serão criados
+  app:                  # Nome do serviço
+    container_name: api # Nome do container
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./target:/app/target
+    ports:                  # Mapeia portas do container para a máquina local
+      - "8080:8080"         # Porta local : Porta do container
+    depends_on:             # Indica dependências para esperar estar pronto
+      - db
+    environment:            # Variáveis de ambiente para o container
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/meubanco
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=123
+
+  db:                       # Nome do serviço para o banco de dados
+    image: postgres:15      # Imagem oficial do PostgreSQL na versão 15
+    container_name: banco_postgres  # Nome do container (opcional)
+    environment:                    # Variáveis de ambiente para configurar o PostgreSQL
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: meubanco
+    ports:                          # Mapeia as portas do banco
+      - "5432:5432"                 # Porta local : Porta do container
