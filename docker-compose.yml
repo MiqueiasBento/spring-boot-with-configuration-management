@@ -1,28 +1,62 @@
-version: '3.8'          # Define a versão do Docker Compose
+version: '3.8'
 
-services:               # Lista os containers (serviços) que serão criados
-  app:                  # Nome do serviço
-    container_name: api # Nome do container
+services:
+  # POSTGRES
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - dev-network
+
+  # PGADMIN
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmindata:/var/lib/pgadmin
+    depends_on:
+      - db
+    networks:
+      - dev-network
+
+  # API
+  app:
     build:
       context: .
       dockerfile: Dockerfile
-    volumes:
-      - ./target:/app/target
-    ports:                  # Mapeia portas do container para a máquina local
-      - "8080:8080"         # Porta local : Porta do container
-    depends_on:             # Indica dependências para esperar estar pronto
+    ports:
+      - "8080:8080"
+    depends_on:
       - db
-    environment:            # Variáveis de ambiente para o container
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/meubanco
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=123
+      - pgadmin
+    restart: unless-stopped
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+    networks:
+      - dev-network
 
-  db:                       # Nome do serviço para o banco de dados
-    image: postgres:15      # Imagem oficial do PostgreSQL na versão 15
-    container_name: banco_postgres  # Nome do container (opcional)
-    environment:                    # Variáveis de ambiente para configurar o PostgreSQL
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123
-      POSTGRES_DB: meubanco
-    ports:                          # Mapeia as portas do banco
-      - "5432:5432"                 # Porta local : Porta do container
+# REDE
+networks:
+  dev-network:
+    driver: bridge
+
+# VOLUMES
+volumes:
+  pgdata:
+    driver: local
+  pgadmindata:
+    driver: local
