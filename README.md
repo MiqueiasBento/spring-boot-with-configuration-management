@@ -11,24 +11,21 @@ Este repositório contém uma aplicação CRUD utilizando **Spring Boot** como b
 
 ## Como Executar
 
-1. **Clonar o repositório:**
-   ``git clone <url-do-repositorio>``
-  ``cd <nome-do-repositorio>``
-
-2.  **Subir os contêineres com Docker Compose:** Certifique-se de ter o Docker e o Docker Compose instalados no sistema.
-    
+1. **Clonar o repositório:**  
+   ``git clone git@github.com:MiqueiasBento/spring-boot-with-docker.git``
+  
+2.  **Subir os contêineres com Docker Compose:** Certifique-se de ter o Docker e o Docker Compose instalados no sistema.  
     `docker-compose up` 
-    
+  
 3.  **Acessar a API:** A aplicação estará disponível em:  
-    `http://localhost:8080`
-    
-4.  **Banco de Dados:** O PostgreSQL será inicializado e estará acessível na porta `5432`.  
-    Credenciais padrão:
-   
-    -   **Usuário**: `seu_usuario`
-    -   **Senha**: `sua_senha`
-    -   **Banco de Dados**: `seu_banco`
+    `localhost:8080/swagger-ui/index.html`
 
+5.  **Banco de Dados:** O PostgreSQL será inicializado e estará acessível na porta `5433`.  
+    Credenciais padrão:
+    -   **Usuário**: `postgres`
+    -   **Senha**: `123`
+    -   **Banco de Dados**: `meubanco`
+  
 ## Rotas da API
 
 -   **GET** `/atividades`: Lista todas as atividades.
@@ -40,8 +37,7 @@ Este repositório contém uma aplicação CRUD utilizando **Spring Boot** como b
 ## Observações
 
 -   O volume de dados do banco de dados é persistente por meio de volumes Docker configurados no arquivo `docker-compose.yml`.
--   Para reconstruir os contêineres ou limpar dados, utilize:
-
+-   Para reconstruir os contêineres ou limpar dados, utilize:  
     `docker-compose down --volumes` 
     
 
@@ -55,4 +51,4 @@ Este repositório contém uma aplicação CRUD utilizando **Spring Boot** como b
 ## Autor
 **Miqueias Bento**  
   
-*Desenvolvido para fins de aprendizado em DevOps e backend.*
+*Desenvolvido para fins de aprendizado em DevOps e backend com Spwing Boot.*
