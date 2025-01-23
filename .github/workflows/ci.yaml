@@ -44,4 +44,4 @@ jobs:
           echo "SPRING_DATASOURCE_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> $GITHUB_ENV
 
       - name: Run Tests
-        run: ./mvnw test
+        run: ./mvnw test -Dspring.profiles.active=test
