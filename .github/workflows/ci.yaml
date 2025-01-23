@@ -14,9 +14,13 @@ jobs:
 
     services:
       postgres:
-        image: postgres:12-alpine
+        image: postgres:15
+        env:
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
         ports:
-          - 5433:5432
+          - 5432:5432
         options: >-
           --health-cmd="pg_isready"
           --health-interval=10s
@@ -24,15 +28,17 @@ jobs:
           --health-retries=3
 
     steps:
+      - name: Wait for PostgreSQL
+        run: |
+          for i in {1..10}; do
+            pg_isready -h 127.0.0.1 -p 5432 && break || sleep 5;
+          done
+
+    steps:
       - name: Checkout Code
         uses: actions/checkout@v3
       
       - name: Configure environment variables
-        env:
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: 123
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-          POSTGRES_HOST_AUTH_METHOD: "true"
         run: |
           echo "SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}" >> $GITHUB_ENV
           echo "SPRING_DATASOURCE_USERNAME=${{ secrets.POSTGRES_USER }}" >> $GITHUB_ENV
