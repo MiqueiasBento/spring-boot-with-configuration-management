@@ -30,11 +30,11 @@ jobs:
       - name: Run the Maven verify phase
         run: mvn --batch-mode --update-snapshots verify
 
-#      - run: mkdir staging && cp target/*.jar staging
-#      - uses: actions/upload-artifact@v4
-#        with:
-#          name: Package
-#          path: staging
-#
-#      - name: Run Checkstyle
-#        run: mvn checkstyle:check
+     - run: mkdir staging && cp target/*.jar staging
+     - uses: actions/upload-artifact@v4
+       with:
+         name: Package
+         path: staging
+
+     - name: Run Checkstyle
+       run: mvn checkstyle:check
