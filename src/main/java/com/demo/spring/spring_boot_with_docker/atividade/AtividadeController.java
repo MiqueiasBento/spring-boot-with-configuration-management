@@ -36,7 +36,7 @@ public class AtividadeController {
 
     @Operation(summary = "Deleta uma atividade cadastrada a partir de seu id")
     @DeleteMapping(value = "/{id}")
-    public void delete(Long id) {
+    public void delete(@PathVariable Long id) {
         atividadeService.delete(id);
     }
 
